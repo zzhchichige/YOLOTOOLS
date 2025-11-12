@@ -55,15 +55,18 @@ def xml(image_path, save_path, size, labels):
         difficult = ET.SubElement(object, 'difficult')
         difficult.text = str(dic['difficult'])
 
+        x, y, w, h = dic['bndbox']   # 解包
+        xmin = x
+        ymin = y
+        xmax = x + w
+        ymax = y + h
+        
         bndbox = ET.SubElement(object, 'bndbox')
-        xmin = ET.SubElement(bndbox, 'xmin')
-        xmin.text = str(dic['bndbox'][0])
-        ymin = ET.SubElement(bndbox, 'ymin')
-        ymin.text = str(dic['bndbox'][1])
-        xmax = ET.SubElement(bndbox, 'xmax')
-        xmax.text = str(dic['bndbox'][2])
-        ymax = ET.SubElement(bndbox, 'ymax')
-        ymax.text = str(dic['bndbox'][3])
+        ET.SubElement(bndbox, 'xmin').text = str(xmin)
+        ET.SubElement(bndbox, 'ymin').text = str(ymin)
+        ET.SubElement(bndbox, 'xmax').text = str(xmax)
+        ET.SubElement(bndbox, 'ymax').text = str(ymax)
+        
 
     indent(root)  # 格式化xml
     tree = ET.ElementTree(root)
@@ -99,3 +102,4 @@ if __name__ == "__main__":
                'bndbox': [20, 89, 297, 350]}]
 
     print(xml(path,save_path, size, labels))
+
